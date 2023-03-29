@@ -24,4 +24,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           password: ${{ secrets.PASSWORD }}
-          script: "cd /www/wwwroot/botadmin.tunagood.site && ./.scripts/deploy.sh"
+          script: "cd /www/wwwroot/botadmin.tunagood.site && chmod 744 ./.scripts/deploy.sh && ./.scripts/deploy.sh"
