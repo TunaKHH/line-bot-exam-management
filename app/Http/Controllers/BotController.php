@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use LINE\LINEBot;
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 
 class BotController extends Controller
 {
-    function chat(Request $request)
+    public function chat(Request $request)
     {
         //實體化linebot物件
-        $httpClient = new CurlHTTPClient(env('LINEBOT_TOKEN'));
-        $bot = new LINEBot($httpClient, ['channelSecret' => env('LINEBOT_SECRET')]);
+        $httpClient = new CurlHTTPClient(env('LINE_CHANNEL_ACCESS_TOKEN'));
+        $bot = new LINEBot($httpClient, ['channelSecret' => env('LINE_CHANNEL_SECRET')]);
 
         //取得使用者id和訊息內容
         $text = $request->events[0]['message']['text'];
@@ -31,37 +32,5 @@ class BotController extends Controller
     {
         // 回傳200
         return response()->json(['message' => 'ok'], 200);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

@@ -15,8 +15,9 @@ use App\Http\Controllers\BotController;
 |
 */
 
-Route::get('/callback', [BotController::class, 'chat']);
+// Route::get('/callback', [BotController::class, 'chat']);
 Route::post('/callback', [BotController::class, 'chat']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
