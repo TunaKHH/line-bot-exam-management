@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('quizzes', QuizController::class);
+Route::resource('quizzes', QuizController::class)->middleware(['auth', 'verified']);
+Route::prefix('api')->group(function () {
+    Route::get('quizzes/{quiz}/start', [QuizApiController::class, 'start'])->name('quizzes.start');
+    Route::post('quizzes/{quiz}/submit', [QuizApiController::class, 'submit'])->name('quizzes.submit');
+});
 
 Route::get('/', function () {
     // 導向到dashboard

@@ -11,37 +11,16 @@ return new class extends Migration
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('image')->nullable();
-            $table->unsignedInteger('options_count');
+            $table->text('description');
             $table->timestamps();
-        });
-
-        Schema::create('options', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('quiz_id');
-            $table->string('title');
-            $table->string('image')->nullable();
-            $table->timestamps();
-
-            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
-        });
-
-        Schema::create('results', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('quiz_id');
-            $table->string('title');
-            $table->string('image')->nullable();
-            $table->text('description')->nullable();
-            $table->timestamps();
-
-            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
         });
     }
 
     public function down()
     {
+        Schema::table('results', function (Blueprint $table) {
+            $table->dropForeign('results_quiz_id_foreign');
+        });
         Schema::dropIfExists('quizzes');
-        Schema::dropIfExists('options');
-        Schema::dropIfExists('results');
     }
 };

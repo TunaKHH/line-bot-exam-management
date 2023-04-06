@@ -1,187 +1,96 @@
-@extends('layouts.admin.app')
+@extends('layouts.app')
 
 @section('content')
-    <h1>編輯題目</h1>
-    <form action="{{ route('quizzes.update', $quiz) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-        <div class="form-group">
-            <label for="title">標題</label>
-            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title"
-                value="{{ old('title', $quiz->title) }}">
-            @error('title')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="form-group">
-            <label for="image">圖片</label>
-            <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image"
-                name="image">
-            @if ($quiz->image)
-                <div class="mt-2">
-                    <img src="{{ Storage::url($quiz->image) }}" width="200">
-                </div>
-            @endif
-            @error('image')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="form-group">
-            <label for="options_count">答案選項數量</label>
-            <input type="number" class="form-control @error('options_count') is-invalid @enderror" id="options_count"
-                name="options_count" value="{{ old('options_count', $quiz->options_count) }}">
-            @error('options_count')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="form-group" id="options-container">
-            <label>答案選項</label>
-            <div class="options">
-                @foreach ($quiz->options as $option)
-                    <div class="option mb-3">
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" class="form-control @error('options.*.title') is-invalid @enderror"
-                                    name="options[{{ $loop->index }}][title]"
-                                    value="{{ old('options.' . $loop->index . '.title', $option->title) }}"
-                                    placeholder="答案選項 {{ $loop->iteration }}">
-                                @error('options.*.title')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <input type="file"
-                                    class="form-control-file @error('options.*.image') is-invalid @enderror"
-                                    name="options[{{ $loop->index }}][image]">
-                                @if ($option->image)
-                                    <div class="mt-2">
-                                        <img src="{{ Storage::url($option->image) }}" width="100">
-                                    </div>
-                                @endif
-                                @error('options.*.image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col">
-                                <button type="button" class="btn btn-sm btn-danger remove-option-btn"
-                                    {{ $loop->iteration <= 2 ? 'disabled' : '' }}>刪除</button>
-                            </div>
-                        </div>
+    <div class="container mx-auto px-4">
+        <h1 class="text-2xl font-bold my-4">{{ __('編輯測驗') }}</h1>
+        <form action="{{ route('quizzes.update', $quiz) }}" method="post" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="mb-4">
+                <label for="title" class="block text-gray-700 font-bold mb-2">{{ __('測驗標題') }}</label>
+                <input type="text" name="title" id="title"
+                    class="form-input w-full @error('title') border-red-500 @enderror"
+                    value="{{ old('title', $quiz->title) }}" required autofocus>
+                @error('title')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-gray-700 font-bold mb-2">{{ __('測驗描述') }}</label>
+                <textarea name="description" id="description"
+                    class="form-textarea w-full @error('description') border-red-500 @enderror" required>{{ old('description', $quiz->description) }}</textarea>
+                @error('description')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            @foreach ($questions as $question)
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold">{{ __('問題 :index', ['index' => $loop->iteration]) }}</h2>
+                    <div class="my-2">
+                        <label for="question-{{ $question->id }}-title"
+                            class="block text-gray-700 font-bold mb-2">{{ __('問題內容') }}</label>
+                        <input type="text" name="questions[{{ $loop->index }}][title]"
+                            id="question-{{ $question->id }}-title"
+                            class="form-input w-full @error('questions.' . $loop->index . '.title') border-red-500 @enderror"
+                            value="{{ old('questions.' . $loop->index . '.title', $question->title) }}" required>
+                        @error('questions.' . $loop->index . '.title')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                @endforeach
-            </div>
-            <button type="button" class="btn btn-primary add-option-btn">新增答案選項</button>
-        </div>
-        <div class="form-group" id="results-container">
-            <label>結果</label>
-            <div class="results">
-                @foreach ($quiz->results as $result)
-                    <div class="result mb-3">
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" class="form-control @error('results.*.title') is-invalid @enderror"
-                                    name="results[{{ $loop->index }}][title]"
-                                    value="{{ old('results.' . $loop->index . '.title', $result->title) }}"
-                                    placeholder="結果 {{ $loop->iteration }} 標題">
-                                @error('results.*.title')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <input type="file"
-                                    class="form-control-file @error('results.*.image') is-invalid @enderror"
-                                    name="results[{{ $loop->index }}][image]">
-                                @if ($result->image)
-                                    <div class="mt-2">
-                                        <img src="{{ Storage::url($result->image) }}" width="100">
-                                    </div>
-                                @endif
-                                @error('results.*.image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            </textarea>
-                        </div>
+                    <div class="my-2">
+                        <label for="question-{{ $question->id }}-image"
+                            class="block text-gray-700 font-bold mb-2">{{ __('問題圖片') }}</label>
+                        <input type="file" name="questions[{{ $loop->index }}][image]"
+                            id="question-{{ $question->id }}-image"
+                            class="form-input w-full @error('questions.' . $loop->index . '.image') border-red-500 @enderror"
+                            accept="image/*">
+                        @error('questions.' . $loop->index . '.image')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col">
-                    <button type="button" class="btn btn-sm btn-danger remove-result-btn"
-                        {{ $loop->iteration <= 2 ? 'disabled' : '' }}>刪除</button>
+                    <div class="my-2">
+                        <label for="question-{{ $question->id }}-options-{{ $option->id }}-title"
+                            class="block text-gray-700 font-bold mb-2">{{ __('選項內容') }}</label>
+                        <input type="text"
+                            name="questions[{{ $loop->parent->index }}][options][{{ $loop->index }}][title]"
+                            id="question-{{ $question->id }}-options-{{ $option->id }}-title"
+                            class="form-input w-full @error('questions.' . $loop->parent->index . '.options.' . $loop->index . '.title') border-red-500 @enderror"
+                            value="{{ old('questions.' . $loop->parent->index . '.options.' . $loop->index . '.title', $option->title) }}"
+                            required>
+                        @error('questions.' . $loop->parent->index . '.options.' . $loop->index . '.title')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="my-2">
+                        <label for="question-{{ $question->id }}-options-{{ $option->id }}-correct"
+                            class="block text-gray-700 font-bold mb-2">{{ __('是否正確選項') }}</label>
+                        <label class="inline-flex items-center">
+                            <input type="radio"
+                                name="questions[{{ $loop->parent->index }}][options][{{ $loop->index }}][correct]"
+                                id="question-{{ $question->id }}-options-{{ $option->id }}-correct" value="1"
+                                class="form-radio @error('questions.' . $loop->parent->index . '.options.' . $loop->index . '.correct') border-red-500 @enderror"
+                                {{ old('questions.' . $loop->parent->index . '.options.' . $loop->index . '.correct', $option->correct) ? 'checked' : '' }}>
+                            <span class="ml-2">{{ __('是') }}</span>
+                        </label>
+                        <label class="inline-flex items-center ml-6">
+                            <input type="radio"
+                                name="questions[{{ $loop->parent->index }}][options][{{ $loop->index }}][correct]"
+                                id="question-{{ $question->id }}-options-{{ $option->id }}-incorrect" value="0"
+                                class="form-radio @error('questions.' . $loop->parent->index . '.options.' . $loop->index . '.correct') border-red-500 @enderror"
+                                {{ old('questions.' . $loop->parent->index . '.options.' . $loop->index . '.correct', $option->correct) ? '' : 'checked' }}>
+                            <span class="ml-2">{{ __('否') }}</span>
+                        </label>
+                        @error('questions.' . $loop->parent->index . '.options.' . $loop->index . '.correct')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
+            @endforeach
+            <div class="flex justify-end mt-4">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    {{ __('儲存') }}
+                </button>
             </div>
-        </div>
-        @endforeach
-        </div>
-        <button type="button" class="btn btn-primary add-result-btn">新增結果</button>
-        </div>
-        <button type="submit" class="btn btn-primary">儲存</button>
-    </form>
-@endsection
-
-@section('scripts')
-    <script>
-        function updateOptionRemoveBtns() {
-            $('.option').each(function(index, el) {
-                $(el).find('.remove-option-btn').prop('disabled', $('.option').length <= 2);
-            });
-        }
-
-        function updateResultRemoveBtns() {
-            $('.result').each(function(index, el) {
-                $(el).find('.remove-result-btn').prop('disabled', $('.result').length <= 2);
-            });
-        }
-
-        $(function() {
-            updateOptionRemoveBtns();
-            updateResultRemoveBtns();
-
-            $('.add-option-btn').click(function() {
-                var lastOption = $('.option:last-child').clone();
-                var newIndex = $('.option').length;
-
-                lastOption.find('input[name^="options"][name$="[title]"]').attr('name', 'options[' +
-                    newIndex + '][title]').val('');
-                lastOption.find('input[name^="options"][name$="[image]"]').attr('name', 'options[' +
-                    newIndex + '][image]').val('');
-                lastOption.find('.remove-option-btn').prop('disabled', false);
-
-                $('#options-container .options').append(lastOption);
-
-                updateOptionRemoveBtns();
-            });
-
-            $('.add-result-btn').click(function() {
-                var lastResult = $('.result:last-child').clone();
-                var newIndex = $('.result').length;
-
-                lastResult.find('input[name^="results"][name$="[title]"]').attr('name', 'results[' +
-                    newIndex + '][title]').val('');
-                lastResult.find('input[name^="results"][name$="[image]"]').attr('name', 'results[' +
-                    newIndex + '][image]').val('');
-                lastResult.find('textarea[name^="results"][name$="[description]"]').attr('name',
-                    'results[' + newIndex + '][description]').val('');
-                lastResult.find('.remove-result-btn').prop('disabled', false);
-
-                $('#results-container .results').append(lastResult);
-
-                updateResultRemoveBtns();
-            });
-
-            $('#options-container').on('click', '.remove-option-btn', function() {
-                $(this).closest('.option').remove();
-                updateOptionRemoveBtns();
-            });
-
-            $('#results-container').on('click', '.remove-result-btn', function() {
-                $(this).closest('.result').remove();
-                updateResultRemoveBtns();
-            });
-        });
-    </script>
+        </form>
+    </div>
 @endsection
