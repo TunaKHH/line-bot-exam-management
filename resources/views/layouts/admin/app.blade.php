@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('title')</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}">
     @yield('css')
 </head>
@@ -188,14 +189,22 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="{{ route('dashboard') }}" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Dashboard
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('quizzes.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tree"></i>
                                 <p>
                                     題目管理
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -251,8 +260,31 @@
             </div>
         </footer>
     </div>
-    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     <script src="{{ asset('js/adminlte.js') }}"></script>
+    <script>
+        // 自動加上 active class
+        // 取得當前網址的路徑
+        const currentPath = window.location.pathname;
+        console.log(currentPath);
+
+        // 取得所有 nav-link 連結
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // 尋找對應的連結，加上 active 類別
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            // 結尾符合currentPath就算符合
+            if (href.endsWith(currentPath)) {
+                console.log('in');
+                link.classList.add('active');
+                // 如果有多層子選單，也要加上 active 類別
+                const parent = link.closest('.nav-treeview');
+                if (parent) {
+                    parent.closest('.nav-item').classList.add('menu-open');
+                }
+            }
+        });
+    </script>
     @yield('js')
 </body>
 
