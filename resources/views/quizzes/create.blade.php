@@ -12,15 +12,16 @@
                             @csrf
                             <div class="form-group">
                                 <label for="title">標題</label>
-                                <input type="text" name="title" id="title" class="form-control" required>
+                                <input type="text" name="title" id="title" class="form-control" placeholder="(選填)">
                             </div>
 
                             <div class="form-group">
                                 <label for="description">描述</label>
-                                <textarea name="description" id="description" class="form-control" required></textarea>
+                                <textarea name="description" id="description" class="form-control" placeholder="(選填)"></textarea>
                             </div>
-
                             <hr>
+                            <button type="submit" class="btn btn-primary">新增測驗</button>
+
 
                             <div class="questions">
                                 <div class="question-template" style="display: none;">
@@ -96,73 +97,7 @@
                                 <input type="file" name="results[][image]" id="result1-image" class="form-control-file">
                             </div>
 
-                            <div class="form-group">
-                                <label for="result2-title">結果2 標題</label>
-                                <input type="text" name="results[][title]" id="result2-title" class="form-control"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="result2-description">結果2 描述</label>
-                                <textarea name="results[][description]" id="result2-description" class="form-control" required></textarea>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="result2-image">結果2 圖片</label>
-                                <input type="file" name="results[][image]" id="result2-image" class="form-control-file">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result3-title">結果3 標題</label>
-                                <input type="text" name="results[][title]" id="result3-title" class="form-control"
-                                    required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result3-description">結果3 描述</label>
-                                <textarea name="results[][description]" id="result3-description" class="form-control" required></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result3-image">結果3 圖片</label>
-                                <input type="file" name="results[][image]" id="result3-image"
-                                    class="form-control-file">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result4-title">結果4 標題</label>
-                                <input type="text" name="results[][title]" id="result4-title" class="form-control"
-                                    required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result4-description">結果4 描述</label>
-                                <textarea name="results[][description]" id="result4-description" class="form-control" required></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result4-image">結果4 圖片</label>
-                                <input type="file" name="results[][image]" id="result4-image"
-                                    class="form-control-file">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result5-title">結果5 標題</label>
-                                <input type="text" name="results[][title]" id="result5-title" class="form-control"
-                                    required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result5-description">結果5 描述</label>
-                                <textarea name="results[][description]" id="result5-description" class="form-control" required></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result5-image">結果5 圖片</label>
-                                <input type="file" name="results[][image]" id="result5-image"
-                                    class="form-control-file">
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">新增測驗</button>
                         </form>
                     </div>
                 </div>
