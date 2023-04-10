@@ -56,40 +56,40 @@ class QuizController extends Controller
         $quiz->description = $data['description'];
         $quiz->save();
 
-        foreach ($data['questions'] as $questionData) {
-            $question = new Question;
-            $question->title = $questionData['title'];
-            $question->quiz_id = $quiz->id;
-            $question->save();
+        // foreach ($data['questions'] as $questionData) {
+        //     $question = new Question;
+        //     $question->title = $questionData['title'];
+        //     $question->quiz_id = $quiz->id;
+        //     $question->save();
 
-            foreach ($questionData['options'] as $optionData) {
-                $option = new Option;
-                $option->title = $optionData['title'];
-                $option->question_id = $question->id;
+        //     foreach ($questionData['options'] as $optionData) {
+        //         $option = new Option;
+        //         $option->title = $optionData['title'];
+        //         $option->question_id = $question->id;
 
-                if (isset($optionData['image'])) {
-                    $path = $optionData['image']->store('public/images');
-                    $url = Storage::url($path);
-                    $option->image_url = $url;
-                }
+        //         if (isset($optionData['image'])) {
+        //             $path = $optionData['image']->store('public/images');
+        //             $url = Storage::url($path);
+        //             $option->image_url = $url;
+        //         }
 
-                $option->save();
-            }
+        //         $option->save();
+        //     }
 
-            foreach ($questionData['result'] as $resultData) {
-                $result = new Result;
-                $result->title = $resultData['title'];
-                $result->quiz_id = $quiz->id;
+        //     foreach ($questionData['result'] as $resultData) {
+        //         $result = new Result;
+        //         $result->title = $resultData['title'];
+        //         $result->quiz_id = $quiz->id;
 
-                if (isset($resultData['image'])) {
-                    $path = $resultData['image']->store('public/images');
-                    $url = Storage::url($path);
-                    $result->image_url = $url;
-                }
+        //         if (isset($resultData['image'])) {
+        //             $path = $resultData['image']->store('public/images');
+        //             $url = Storage::url($path);
+        //             $result->image_url = $url;
+        //         }
 
-                $result->save();
-            }
-        }
+        //         $result->save();
+        //     }
+        // }
 
         return redirect()->route('quizzes.show', $quiz->id)->with('success', '測驗已創建');
     }

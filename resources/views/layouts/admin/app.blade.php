@@ -201,7 +201,7 @@
                             <a href="{{ route('quizzes.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tree"></i>
                                 <p>
-                                    題目管理
+                                    測驗管理
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -263,27 +263,31 @@
     <script src="{{ asset('js/adminlte.js') }}"></script>
     <script>
         // 自動加上 active class
-        // 取得當前網址的路徑
-        const currentPath = window.location.pathname;
-        console.log(currentPath);
+        function addActiveClass() {
+            // 取得當前網址的路徑
+            const currentPath = window.location.pathname;
 
-        // 取得所有 nav-link 連結
-        const navLinks = document.querySelectorAll('.nav-link');
+            // 取得所有 nav-link 連結
+            const navLinks = document.querySelectorAll('.nav-link');
 
-        // 尋找對應的連結，加上 active 類別
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            // 結尾符合currentPath就算符合
-            if (href.endsWith(currentPath)) {
-                console.log('in');
-                link.classList.add('active');
-                // 如果有多層子選單，也要加上 active 類別
-                const parent = link.closest('.nav-treeview');
-                if (parent) {
-                    parent.closest('.nav-item').classList.add('menu-open');
+            // 尋找對應的連結，加上 active 類別
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                // 結尾符合currentPath就算符合
+                if (href.endsWith(currentPath)) {
+                    console.log('in');
+                    link.classList.add('active');
+                    // 如果有多層子選單，也要加上 active 類別
+                    const parent = link.closest('.nav-treeview');
+                    if (parent) {
+                        parent.closest('.nav-item').classList.add('menu-open');
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        // 當頁面載入完成，執行 addActiveClass 函式
+        window.addEventListener('load', addActiveClass);
     </script>
     @yield('js')
 </body>

@@ -20,84 +20,10 @@
                                 <textarea name="description" id="description" class="form-control" placeholder="(選填)"></textarea>
                             </div>
                             <hr>
-                            <button type="submit" class="btn btn-primary">新增測驗</button>
-
-
-                            <div class="questions">
-                                <div class="question-template" style="display: none;">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <span class="question-number"></span>
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm float-right delete-question"><i
-                                                    class="fas fa-trash"></i></button>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="question-title" class="col-form-label">題目</label>
-                                                <textarea class="form-control question-title" name="questions[][title]" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="question-image" class="col-form-label">圖片</label>
-                                                <input type="file" class="form-control-file question-image"
-                                                    name="questions[][image]">
-                                            </div>
-
-                                            <div class="form-group options">
-                                                <div class="option-template" style="display: none;">
-                                                    <div class="input-group mb-2">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <input type="radio" name="questions[][correct_option_id]">
-                                                            </div>
-                                                        </div>
-                                                        <input type="text" class="form-control option-title"
-                                                            name="questions[][options][][title]" placeholder="選項內容"
-                                                            required>
-                                                        <div class="input-group-append">
-                                                            <button type="button" class="btn btn-danger delete-option"><i
-                                                                    class="fas fa-trash"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <label for="options" class="col-form-label">選項</label>
-
-                                                <div class="options-list">
-                                                    <button type="button" class="btn btn-primary add-option"><i
-                                                            class="fas fa-plus"></i> 新增選項</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="questions-list">
-                                    <button type="button" class="btn btn-primary add-question"><i class="fas fa-plus"></i>
-                                        新增題目</button>
-                                </div>
+                            {{-- 置右的按鈕 --}}
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-success">新增測驗</button>
                             </div>
-
-                            <hr>
-
-                            <div class="form-group">
-                                <label for="result1-title">結果1 標題</label>
-                                <input type="text" name="results[][title]" id="result1-title" class="form-control"
-                                    required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result1-description">結果1 描述</label>
-                                <textarea name="results[][description]" id="result1-description" class="form-control" required></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="result1-image">結果1 圖片</label>
-                                <input type="file" name="results[][image]" id="result1-image" class="form-control-file">
-                            </div>
-
-
                         </form>
                     </div>
                 </div>
