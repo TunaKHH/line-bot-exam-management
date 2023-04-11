@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Option extends Model
 {
     use HasFactory;
-    protected $fillable = ['quiz_id', 'title', 'image'];
+    protected $fillable = ['question_id', 'title', 'image'];
 
-    public function quiz()
+    public function question()
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->belongsTo(Question::class);
     }
 }

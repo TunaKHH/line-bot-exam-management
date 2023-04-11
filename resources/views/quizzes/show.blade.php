@@ -8,36 +8,60 @@
                     <div class="card-header">測驗：{{ $quiz->title }}</div>
 
                     <div class="card-body">
-                        <p>測驗描述ww：{{ $quiz->description }}</p>
+                        <h3>測驗描述：{{ $quiz->description }}</h3>
+                        {{-- 靠右 --}}
+                        <div class="float-end">
+                            <form action="{{ route('question.store') }}" method="post">
+                                @csrf
+                                <input type="text" name="title">
+                                <input type="hidden" name="quiz_id" value="{{ $quiz->id }}">
+                                <button type="submit" class="btn btn-primary">
+                                    新增題目
+                                </button>
+                            </form>
+                        </div>
 
                         <div class="quiz-questions">
-                            @foreach ($quiz->questions as $question)
-                                <div class="question" data-question-id="{{ $question->id }}">
-                                    <h5>{{ $question->title }}</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">圖片</th>
+                                        <th scope="col">題目</th>
+                                        <th scope="col">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($quiz->questions as $question)
+                                        <tr>
+                                            <td>
+                                                @if ($question->image_url)
+                                                    <img src="{{ $question->image_url }}" alt="{{ $question->title }}"
+                                                        class="img-thumbnail">
+                                                @endif
+                                            </td>
+                                            <td>{{ $question->title }}</td>
+                                            <td>
+                                                {{-- 編輯此題目 --}}
+                                                {{--
+                                                <a href="{{ route('question.edit', $question->id) }}"
+                                                    class="btn btn-secondary btn-sm">編輯</a> --}}
+                                                {{-- 查看題目選項 --}}
+                                                <a href="{{ route('option.index', $question->id) }}"
+                                                    class="btn btn-primary btn-sm">選項</a>
+                                                {{-- 刪除此題目 --}}
+                                                <form action="{{ route('question.destroy', $question->id) }}" method="post"
+                                                    style="display: inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('確認刪除題目？')">刪除</button>
 
-                                    @if ($question->image_url)
-                                        <img src="{{ $question->image_url }}" alt="{{ $question->title }}"
-                                            class="img-thumbnail">
-                                    @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
 
-                                    <div class="options">
-                                        @foreach ($question->options->shuffle() as $option)
-                                            <label class="option">
-                                                <input type="radio" name="responses[{{ $question->id }}]"
-                                                    value="{{ $option->id }}">
-                                                <div class="option-content">
-                                                    @if ($option->image_url)
-                                                        <img src="{{ $option->image_url }}" alt="{{ $option->title }}"
-                                                            class="img-thumbnail">
-                                                    @endif
-
-                                                    <span class="option-title">{{ $option->title }}</span>
-                                                </div>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endforeach
                         </div>
                         <div class="modal" tabindex="-1">
                             <div class="modal-dialog">
@@ -58,23 +82,25 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#questionModal">
-                            新增題目
-                        </button>
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <x-quizzes.question-modal />
+    {{-- <x-quizzes.question-modal /> --}}
 @endsection
 
 @section('js')
     <script>
-        console.log('www tuna here');
+        function fetchData(questionId) {
+            return axios.get(`/question/${questionId}/options`)
+                .then(function(response) {
+                    // 渲染數據到 modal 的 div 元素中
+                    document.getElementById('modal-content').innerHTML = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        }
     </script>
 @endsection

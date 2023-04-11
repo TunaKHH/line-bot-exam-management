@@ -18,28 +18,14 @@ class QuizApiController extends Controller
      */
     public function start(Quiz $quiz)
     {
-        $questions = $quiz->questions->map(function ($question) {
-            $options = $question->options->map(function ($option) {
-                return [
-                    'id' => $option->id,
-                    'title' => $option->title,
-                    'imageUrl' => $option->image_url,
-                ];
-            });
-            return [
-                'id' => $question->id,
-                'title' => $question->title,
-                'imageUrl' => $question->image_url,
-                'options' => $options->shuffle()->values()->all(),
-            ];
-        });
+        // TODO 紀錄使用者進行的測驗
+        // TODO 取得要回傳的測驗標題、描述
 
         return response()->json([
             'quiz' => [
                 'id' => $quiz->id,
                 'title' => $quiz->title,
                 'description' => $quiz->description,
-                'questions' => $questions->shuffle()->values()->all(),
             ]
         ]);
     }

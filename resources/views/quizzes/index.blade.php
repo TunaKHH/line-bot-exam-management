@@ -12,7 +12,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>標題</th>
+                                    <th>測驗標題</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -23,9 +23,9 @@
                                         <td>{{ $quiz->title }}</td>
                                         <td>
                                             <a href="{{ route('quizzes.show', $quiz->id) }}"
-                                                class="btn btn-primary btn-sm">開始</a>
+                                                class="btn btn-primary btn-sm">查看</a>
                                             <a href="{{ route('quizzes.edit', $quiz->id) }}"
-                                                class="btn btn-secondary btn-sm">編輯</a>
+                                                class="btn btn-secondary btn-sm disabled">編輯</a>
                                             <form action="{{ route('quizzes.destroy', $quiz->id) }}" method="POST"
                                                 style="display: inline-block;">
                                                 @csrf

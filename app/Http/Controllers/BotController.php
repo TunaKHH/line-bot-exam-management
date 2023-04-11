@@ -20,6 +20,9 @@ class BotController extends Controller
         $text = $request->events[0]['message']['text'];
         $user_id = $request->events[0]['source']['userId'];
         $reply_token = $request->events[0]['replyToken'];
+
+        // 透過QuizApiController 的start api 取得測驗資料
+        $httpClient = new CurlHTTPClient(env('APP_URL') . '/api/quizzes/1/start'); // TODO 未測試
         // 回覆訊息
         $bot->replyText($reply_token, $text);
         // 回傳200

@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuizApiController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +20,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('quizzes', QuizController::class)->middleware(['auth', 'verified']);
+Route::resource('question', QuestionController::class)->middleware(['auth', 'verified']);
+Route::resource('option', OptionController::class)->middleware(['auth', 'verified']);
+Route::get('/question/{question}/options', [OptionController::class, 'index'])->name('option.index');
+
+
+
 Route::prefix('api')->group(function () {
     Route::get('quizzes/{quiz}/start', [QuizApiController::class, 'start'])->name('quizzes.start');
     Route::post('quizzes/{quiz}/submit', [QuizApiController::class, 'submit'])->name('quizzes.submit');
