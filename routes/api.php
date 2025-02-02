@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BotController;
+use App\Http\Controllers\Bot\BotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use App\Http\Controllers\BotController;
 |
 */
 
-// Route::get('/callback', [BotController::class, 'chat']);
+Route::post('/callback/test', [BotController::class, 'test']);
 Route::post('/callback', [BotController::class, 'chat']);
 
 
